@@ -37,12 +37,14 @@ export default function App() {
         <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="workflows" element={<WorkflowsPage />} />
-          <Route path="workflows/:id/builder" element={<WorkflowBuilderPage />} />
           <Route path="templates" element={<TemplatesPage />} />
           <Route path="executions" element={<ExecutionsPage />} />
           <Route path="notifications" element={<NotificationsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
+
+        {/* Full Screen Builder */}
+        <Route path="/workflows/:id/builder" element={<ProtectedRoute><WorkflowBuilderPage /></ProtectedRoute>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

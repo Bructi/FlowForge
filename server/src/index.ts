@@ -5,11 +5,11 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { createServer } from 'http';
 import { Server as SocketServer } from 'socket.io';
-import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
+import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 import { initDatabase } from './db/database';
 import { errorHandler } from './middleware/errorHandler';

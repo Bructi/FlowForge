@@ -80,7 +80,7 @@ export default function PropertiesPanel({ nodeId, nodes, onUpdate, onDelete }: P
               <select
                 id={`node-provider-${nodeId}`}
                 className="input text-sm"
-                value={data.provider || 'ollama'}
+                value={data.provider || 'openrouter'}
                 onChange={(e) => update('provider', e.target.value)}
               >
                 {AI_PROVIDERS.map((p) => (
@@ -113,7 +113,7 @@ export default function PropertiesPanel({ nodeId, nodes, onUpdate, onDelete }: P
                   className="input text-sm"
                   value={data.model || ''}
                   onChange={(e) => update('model', e.target.value)}
-                  placeholder={data.provider === 'ollama' ? 'llama3.2' : 'gpt-4o-mini'}
+                  placeholder={data.provider === 'openrouter' ? 'meta-llama/llama-3-8b-instruct:free' : 'gpt-4o-mini'}
                 />
               )}
             </div>

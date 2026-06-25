@@ -1,4 +1,5 @@
 import axios from 'axios';
+import nodemailer from 'nodemailer';
 import { Knex } from 'knex';
 import { WorkflowNode, ExecutionContext } from './ExecutionEngine';
 import { getDb } from '../db/database';
@@ -31,7 +32,7 @@ export async function executeNode(node: WorkflowNode, inputs: any, ctx: Executio
         : typeof inputs === 'object' ? JSON.stringify(inputs, null, 2)
         : String(inputs || '');
 
-      const defaultProvider = process.env.DEFAULT_AI_PROVIDER || 'ollama';
+      const defaultProvider = process.env.DEFAULT_AI_PROVIDER || 'openrouter';
 
       try {
         const response = await provider.complete({
@@ -213,10 +214,29 @@ export async function executeNode(node: WorkflowNode, inputs: any, ctx: Executio
 
     // ─── Email Nodes ──────────────────────────────────────
     case 'smtp': {
-      // Stub — SMTP sending would use nodemailer
       const { to, subject } = data;
       const body = typeof inputs === 'string' ? inputs : JSON.stringify(inputs);
-      return { sent: true, to, subject, preview: body.substring(0, 100) };
+      
+      try {
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST || 'smtp.gmail.com',
+          port: parseInt(process.env.SMTP_PORT || '587'),
+          secure: process.env.SMTP_SECURE === 'true',
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        });
+        const info = await transporter.sendMail({
+          from: process.env.SMTP_FROM || process.env.SMTP_USER,
+          to,
+          subject: subject || 'FlowForge AI Notification',
+          text: body,
+        });
+        return { sent: true, to, subject, messageId: info.messageId, preview: body.substring(0, 100) };
+      } catch (err: any) {
+        throw new Error(`SMTP Error: ${err.message}`);
+      }
     }
 
     case 'gmail':

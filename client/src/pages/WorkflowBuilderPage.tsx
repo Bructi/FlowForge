@@ -147,7 +147,7 @@ function WorkflowBuilderInner() {
       id: `node_${Date.now()}`,
       type,
       position,
-      data: { label, provider: 'ollama', model: 'llama3.2', temperature: 0.7, maxTokens: 2000 },
+      data: { label, provider: 'openrouter', model: 'meta-llama/llama-3-8b-instruct:free', temperature: 0.7, maxTokens: 2000 },
     }
 
     setNodes((nds) => [...nds, newNode])
@@ -166,7 +166,7 @@ function WorkflowBuilderInner() {
   const onPaneClick = useCallback(() => setSelectedNodeId(null), [])
 
   return (
-    <div className="flex h-[calc(100vh-56px)] overflow-hidden bg-[#f8f9ff]">
+    <div className="flex h-screen overflow-hidden bg-[#f8f9ff]">
       {/* Left panel — Node palette */}
       <NodePanel />
 

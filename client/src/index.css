@@ -180,7 +180,8 @@ body {
   background: white;
   border: 1.5px solid var(--border);
   border-radius: 12px;
-  min-width: 200px;
+  width: 240px;
+  max-width: 240px;
   box-shadow: var(--shadow);
   transition: all 0.15s ease;
 }
